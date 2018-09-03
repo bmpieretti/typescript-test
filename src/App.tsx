@@ -1,13 +1,31 @@
 import * as React from 'react';
 
-export interface AppProps { greeting: string; name: string; }
+export interface Props { greeting: string; name: string; }
+export interface State { input: string; }
 
-class App extends React.Component<AppProps, {}> {
+class App extends React.Component<Props, State> {
+  state = {
+    input: ''
+  }
+
+  onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const { value } = event.currentTarget;
+
+    this.setState(prevState => ({
+      ...prevState,
+      input: value
+    }));
+  }
+
   render() {
     const {
       greeting,
       name
     } = this.props;
+
+    const {
+      input
+    } = this.state;
 
     return (
       <div className="App">
@@ -17,6 +35,8 @@ class App extends React.Component<AppProps, {}> {
         <p className="App-intro">
           {greeting} {name}!
         </p>
+        <p>Type below to update state: </p>
+        <input type="text" onChange={this.onChange} value={input} />
       </div>
     );
   }
